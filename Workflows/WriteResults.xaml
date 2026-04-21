@@ -104,7 +104,7 @@
   </TextExpression.ReferencesForImplementation>
   <Sequence DisplayName="Writes eligible applicants to CSV and appends a summary line to the log" sap:VirtualizedContainerService.HintSize="2376,1248" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
-      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Holds the one-line run summary appended to ResultsLog.txt." Name="strLogLine" />
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Source: built inside this workflow from DateTime.Now plus the count arguments. &#xD;&#xA;&#xD;&#xA;Reason: we need to assemble the summary text before appending it. &#xD;&#xA;&#xD;&#xA;Outcome: passed to the Append Line activity and written to ResultsLog.txt." Name="strLogLine" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">

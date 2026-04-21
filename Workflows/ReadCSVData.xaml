@@ -99,7 +99,7 @@
       <AssemblyReference>System.Linq.Async</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Reads bursary_applications.csv into a DataTable" sap:VirtualizedContainerService.HintSize="2382,786.6566666666666" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Reads bursary_applications.csv into a DataTable" sap:VirtualizedContainerService.HintSize="2376,837" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -113,7 +113,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:ReadCsvFile>
-    <ui:LogMessage sap2010:Annotation.AnnotationText="Records how many rows were loaded for traceability." DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="450,211" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Loaded &quot; + out_dt_Applications.Rows.Count.ToString + &quot; applications from CSV.&quot;]">
+    <ui:LogMessage sap2010:Annotation.AnnotationText="Source: out_dt_Applications just populated. &#xD;&#xA;&#xD;&#xA;Reason: traceability — confirm the load succeeded and record the row count. &#xD;&#xA;&#xD;&#xA;Outcome: Info entry written to the execution log." DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="450,276" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Loaded &quot; + out_dt_Applications.Rows.Count.ToString + &quot; applications from CSV.&quot;]">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>

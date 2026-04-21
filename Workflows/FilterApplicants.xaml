@@ -97,9 +97,9 @@
       <AssemblyReference>System.Data.SqlClient</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Applies the rules (AverageMark &gt;= 70 AND HouseholdIncome &lt;= 150000)" sap:VirtualizedContainerService.HintSize="2376,2302" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Applies the rules (AverageMark &gt;= 70 AND HouseholdIncome &lt;= 150000)" sap:VirtualizedContainerService.HintSize="2376,2817" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
-      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Holds the built filter expression used by dt.Select." Name="strFilter" />
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Source: built inside this workflow from in_intMinMark and in_dblMaxIncome. &#xD;&#xA;&#xD;&#xA;Reason: the filter expression needs to be assembled dynamically so thresholds aren't hard-coded in activities. &#xD;&#xA;&#xD;&#xA;Outcome: used by the dt.Select call to filter in_dt_Applications." Name="strFilter" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -107,7 +107,7 @@
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <ui:Comment sap:VirtualizedContainerService.HintSize="452,284" sap2010:WorkflowViewState.IdRef="Comment_1" Text="Source: dt_Applications plus thresholds intMinMark and dblMaxIncome from Main. &#xD;&#xA;&#xD;&#xA;Reason: to apply the bursary rules (AverageMark &gt;= 70 AND HouseholdIncome &lt;= 150000) in one place so they are easy to change. &#xD;&#xA;&#xD;&#xA;Outcome: dt_Eligible contains only the qualifying applicants and intEligibleCount holds the total." />
-    <Assign sap2010:Annotation.AnnotationText="Builds the dynamic filter string from the threshold arguments." DisplayName="Assign - Build Filter Expression" sap:VirtualizedContainerService.HintSize="452,220" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign sap2010:Annotation.AnnotationText="Source: in_intMinMark and in_dblMaxIncome arguments. &#xD;&#xA;&#xD;&#xA;Reason: build the filter string dynamically to avoid hard-coding thresholds in the Select call. &#xD;&#xA;&#xD;&#xA;Outcome: strFilter holds the expression used in the next steps." DisplayName="Assign - Build Filter Expression" sap:VirtualizedContainerService.HintSize="452,318" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[strFilter]</OutArgument>
       </Assign.To>
@@ -120,14 +120,14 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </Assign>
-    <ui:LogMessage sap2010:Annotation.AnnotationText="Records the exact filter used for this run." DisplayName="Log - Filter Expression Used" sap:VirtualizedContainerService.HintSize="452,206" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Filter expression: &quot; + strFilter]">
+    <ui:LogMessage sap2010:Annotation.AnnotationText="Source: strFilter just built. &#xD;&#xA;&#xD;&#xA;Reason: audit trail — record the exact rule applied on this run. &#xD;&#xA;&#xD;&#xA;Outcome: Info entry written to the execution log." DisplayName="Log - Filter Expression Used" sap:VirtualizedContainerService.HintSize="452,285" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Filter expression: &quot; + strFilter]">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:LogMessage>
-    <If sap2010:Annotation.AnnotationText="Prevents a CopyToDataTable crash when zero rows match." Condition="[in_dt_Applications.Select(strFilter).Length &gt; 0]" DisplayName="IF - Check If Any Rows Match" sap:VirtualizedContainerService.HintSize="452,1569" sap2010:WorkflowViewState.IdRef="If_1">
+    <If sap2010:Annotation.AnnotationText="Source: in_dt_Applications filtered by strFilter. &#xD;&#xA;&#xD;&#xA;Reason: CopyToDataTable throws when zero rows match, so we guard against an empty result. &#xD;&#xA;&#xD;&#xA;Outcome: out_dt_Eligible is either populated (Then) or returned as an empty clone." Condition="[in_dt_Applications.Select(strFilter).Length &gt; 0]" DisplayName="IF - Check If Any Rows Match" sap:VirtualizedContainerService.HintSize="452,1907" sap2010:WorkflowViewState.IdRef="If_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -136,14 +136,14 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <Sequence DisplayName="Then - Rows Match" sap:VirtualizedContainerService.HintSize="450,711" sap2010:WorkflowViewState.IdRef="Sequence_2">
+        <Sequence DisplayName="Then - Rows Match" sap:VirtualizedContainerService.HintSize="450,954" sap2010:WorkflowViewState.IdRef="Sequence_2">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Assign sap2010:Annotation.AnnotationText="Copies only the qualifying applicants into the output DataTable." DisplayName="Assign - Copy Filtered Rows to DataTable" sap:VirtualizedContainerService.HintSize="416,220" sap2010:WorkflowViewState.IdRef="Assign_4">
+          <Assign sap2010:Annotation.AnnotationText="Source: the DataRow array returned by dt.Select. &#xD;&#xA;&#xD;&#xA;Reason: FilterApplicants must return a DataTable, not a row array. &#xD;&#xA;&#xD;&#xA;Outcome: out_dt_Eligible contains only the applicants that satisfy both rules." DisplayName="Assign - Copy Filtered Rows to DataTable" sap:VirtualizedContainerService.HintSize="416,301" sap2010:WorkflowViewState.IdRef="Assign_4">
             <Assign.To>
               <OutArgument x:TypeArguments="sd:DataTable">[out_dt_Eligible]</OutArgument>
             </Assign.To>
@@ -156,7 +156,7 @@
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
           </Assign>
-          <Assign sap2010:Annotation.AnnotationText="Stores the count so Main and WriteResults can log it." DisplayName="Capture Eligible Count" sap:VirtualizedContainerService.HintSize="416,220" sap2010:WorkflowViewState.IdRef="Assign_5">
+          <Assign sap2010:Annotation.AnnotationText="Source: out_dt_Eligible just populated. &#xD;&#xA;&#xD;&#xA;Reason: Main and WriteResults need the count for the log summary. &#xD;&#xA;&#xD;&#xA;Outcome: out_intEligibleCount holds the number of qualifying applicants." DisplayName="Assign - Capture Eligible Count" sap:VirtualizedContainerService.HintSize="416,301" sap2010:WorkflowViewState.IdRef="Assign_5">
             <Assign.To>
               <OutArgument x:TypeArguments="x:Int32">[out_intEligibleCount]</OutArgument>
             </Assign.To>
@@ -169,7 +169,7 @@
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
           </Assign>
-          <ui:LogMessage sap2010:Annotation.AnnotationText="Logs the outcome of the filter step (counts only, no PII)." DisplayName="Log  - Rows Matched" sap:VirtualizedContainerService.HintSize="416,211" sap2010:WorkflowViewState.IdRef="LogMessage_3" Message="[&quot;Filter complete. &quot; + out_intEligibleCount.ToString + &quot; eligible applicants out of &quot; + in_dt_Applications.Rows.Count.ToString]">
+          <ui:LogMessage sap2010:Annotation.AnnotationText="Source: out_intEligibleCount and in_dt_Applications.Rows.Count. &#xD;&#xA;&#xD;&#xA;Reason: audit trail of filter outcome — counts only, no PII. &#xD;&#xA;&#xD;&#xA;Outcome: Info entry written to the execution log." DisplayName="Log  - Rows Matched" sap:VirtualizedContainerService.HintSize="416,292" sap2010:WorkflowViewState.IdRef="LogMessage_3" Message="[&quot;Filter complete. &quot; + out_intEligibleCount.ToString + &quot; eligible applicants out of &quot; + in_dt_Applications.Rows.Count.ToString]">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>

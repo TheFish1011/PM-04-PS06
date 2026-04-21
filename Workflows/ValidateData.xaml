@@ -93,14 +93,14 @@
       <AssemblyReference>System.Linq.Async</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Checks required columns exist and are not empty; sets isValidData" sap:VirtualizedContainerService.HintSize="2376,2761" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Checks required columns exist and are not empty; sets isValidData" sap:VirtualizedContainerService.HintSize="2376,2982" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <ui:Comment sap:VirtualizedContainerService.HintSize="488,264" sap2010:WorkflowViewState.IdRef="Comment_1" Text="Source: dt_Applications loaded by ReadCSVData. &#xD;&#xA;&#xD;&#xA;Reason: to make sure rows exist and the required columns (AverageMark, HouseholdIncome) are present before the filter runs. &#xD;&#xA;&#xD;&#xA;Outcome: isValidData set to True or False so Main.xaml knows whether to continue." />
-    <If sap2010:Annotation.AnnotationText="Guards against an empty input file." Condition="[in_dt_Applications.Rows.Count &gt; 0]" DisplayName="IF - Check Row Count Greater Than Zero" sap:VirtualizedContainerService.HintSize="488,2277" sap2010:WorkflowViewState.IdRef="If_1">
+    <If sap2010:Annotation.AnnotationText="Source: in_dt_Applications from ReadCSVData. &#xD;&#xA;&#xD;&#xA;Reason: an empty DataTable would cause the filter to fail silently. &#xD;&#xA;&#xD;&#xA;Outcome: bot stops safely if no rows are present." Condition="[in_dt_Applications.Rows.Count &gt; 0]" DisplayName="IF - Check Row Count Greater Than Zero" sap:VirtualizedContainerService.HintSize="488,2419" sap2010:WorkflowViewState.IdRef="If_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -109,7 +109,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <Sequence sap2010:Annotation.AnnotationText="Confirmed input file is not empty and process continues" DisplayName="Then - Check Row Count More Than Zero (Valid)" sap:VirtualizedContainerService.HintSize="486,1569" sap2010:WorkflowViewState.IdRef="Sequence_2">
+        <Sequence sap2010:Annotation.AnnotationText="Confirmed input file is not empty and process continues" DisplayName="Then - Check Row Count More Than Zero (Valid)" sap:VirtualizedContainerService.HintSize="486,1648" sap2010:WorkflowViewState.IdRef="Sequence_2">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -123,7 +123,7 @@
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
           </ui:LogMessage>
-          <If sap2010:Annotation.AnnotationText="Makes sure the filter columns are present before running the Select." Condition="[in_dt_Applications.Columns.Contains(&quot;AverageMark&quot;) AndAlso in_dt_Applications.Columns.Contains(&quot;HouseholdIncome&quot;)]" DisplayName="IF - Check Required Columns Exist" sap:VirtualizedContainerService.HintSize="452,1272" sap2010:WorkflowViewState.IdRef="If_2">
+          <If sap2010:Annotation.AnnotationText="Source: the schema of in_dt_Applications. &#xD;&#xA;&#xD;&#xA;Reason: the filter expression references these two columns — if they are missing, dt.Select will throw. &#xD;&#xA;&#xD;&#xA;Outcome: out_isValidData set to True only if both columns exist." Condition="[in_dt_Applications.Columns.Contains(&quot;AverageMark&quot;) AndAlso in_dt_Applications.Columns.Contains(&quot;HouseholdIncome&quot;)]" DisplayName="IF - Check Required Columns Exist" sap:VirtualizedContainerService.HintSize="452,1351" sap2010:WorkflowViewState.IdRef="If_2">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -223,7 +223,7 @@
         </Sequence>
       </If.Else>
     </If>
-    <ui:LogMessage sap2010:Annotation.AnnotationText="Records the validation outcome for the audit trail." DisplayName="Log - Validation Result" sap:VirtualizedContainerService.HintSize="488,197" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Validation complete. isValidData = &quot; + out_isValidData.ToString]">
+    <ui:LogMessage sap2010:Annotation.AnnotationText="Source: out_isValidData from the previous steps. &#xD;&#xA;&#xD;&#xA;Reason: audit trail of whether validation passed on this run. &#xD;&#xA;&#xD;&#xA;Outcome: Info entry written to the execution log." DisplayName="Log - Validation Result" sap:VirtualizedContainerService.HintSize="488,276" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Validation complete. isValidData = &quot; + out_isValidData.ToString]">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
