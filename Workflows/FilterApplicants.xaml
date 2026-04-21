@@ -1,10 +1,10 @@
 <Activity mc:Ignorable="sap sap2010" x:Class="FilterApplicants" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
-    <x:Property sap2010:Annotation.AnnotationText="Row count of the eligible DataTable. Used in the log summary." Name="out_intEligibleCount" Type="OutArgument(x:Int32)" />
-    <x:Property sap2010:Annotation.AnnotationText="DataTable of only the applicants who satisfy both rules." Name="out_dt_Eligible" Type="OutArgument(sd:DataTable)" />
-    <x:Property sap2010:Annotation.AnnotationText="Maximum HouseholdIncome threshold passed from Main (default 150000)." Name="in_dblMaxIncome" Type="InArgument(x:Double)" />
-    <x:Property sap2010:Annotation.AnnotationText="Minimum AverageMark threshold passed from Main (default 70)." Name="in_intMinMark" Type="InArgument(x:Int32)" />
-    <x:Property sap2010:Annotation.AnnotationText="Full applicant DataTable from ReadCSVData." Name="in_dt_Applications" Type="InArgument(sd:DataTable)" />
+    <x:Property sap2010:Annotation.AnnotationText="Source: calculated inside this workflow as out_dt_Eligible.Rows.Count. &#xD;&#xA;&#xD;&#xA;Reason: give Main a quick count to log. &#xD;&#xA;&#xD;&#xA;Outcome: used in the run summary line." Name="out_intEligibleCount" Type="OutArgument(x:Int32)" />
+    <x:Property sap2010:Annotation.AnnotationText="Source: populated by the filter expression in this workflow. &#xD;&#xA;&#xD;&#xA;Reason: hand back only the qualifying rows. &#xD;&#xA;&#xD;&#xA;Outcome: Main passes it into WriteResults." Name="out_dt_Eligible" Type="OutArgument(sd:DataTable)" />
+    <x:Property sap2010:Annotation.AnnotationText="Source: dblMaxIncome from Main (default 150000). &#xD;&#xA;&#xD;&#xA;Reason: bursary rule threshold for household income. &#xD;&#xA;&#xD;&#xA;Outcome: used to build the filter expression at runtime." Name="in_dblMaxIncome" Type="InArgument(x:Double)" />
+    <x:Property sap2010:Annotation.AnnotationText="Source: intMinMark from Main (default 70). &#xD;&#xA;&#xD;&#xA;Reason: bursary rule threshold for academic merit. &#xD;&#xA;&#xD;&#xA;Outcome: used to build the filter expression at runtime." Name="in_intMinMark" Type="InArgument(x:Int32)" />
+    <x:Property sap2010:Annotation.AnnotationText="Source: dt_Applications from Main. &#xD;&#xA;&#xD;&#xA;Reason: the full applicant list is needed to run the filter against. &#xD;&#xA;&#xD;&#xA;Outcome: used in the dt.Select expression." Name="in_dt_Applications" Type="InArgument(sd:DataTable)" />
   </x:Members>
   <VisualBasic.Settings>
     <x:Null />
