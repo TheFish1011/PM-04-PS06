@@ -105,7 +105,7 @@
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:Comment sap:VirtualizedContainerService.HintSize="450,108" sap2010:WorkflowViewState.IdRef="Comment_1" Text="Reads the CSV into a DataTable so the rest of the bot can work with applicant records." />
+    <ui:Comment sap:VirtualizedContainerService.HintSize="450,225" sap2010:WorkflowViewState.IdRef="Comment_1" Text="Source: bursary_applications.csv in Data\Input\ supplied by DHET.&#xD;&#xA;&#xD;&#xA;Reason: downstream workflows need the applicants as a DataTable to process them. &#xD;&#xA;&#xD;&#xA;Outcome: dt_Applications populated with all applicant records." />
     <ui:ReadCsvFile PathResource="{x:Null}" sap2010:Annotation.AnnotationText="Loads every applicant record from the CSV into memory." DataTable="[out_dt_Applications]" Delimitator="Comma" DelimitatorForViewModel="Comma" DisplayName="Read CSV - Load Bursary Applications" FilePath="[in_strCSVPath]" sap:VirtualizedContainerService.HintSize="450,215" sap2010:WorkflowViewState.IdRef="ReadCsvFile_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">

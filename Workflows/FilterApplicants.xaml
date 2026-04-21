@@ -97,7 +97,7 @@
       <AssemblyReference>System.Data.SqlClient</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Applies the rules (AverageMark &gt;= 70 AND HouseholdIncome &lt;= 150000)" sap:VirtualizedContainerService.HintSize="2376,2185" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Applies the rules (AverageMark &gt;= 70 AND HouseholdIncome &lt;= 150000)" sap:VirtualizedContainerService.HintSize="2376,2302" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Holds the built filter expression used by dt.Select." Name="strFilter" />
     </Sequence.Variables>
@@ -106,7 +106,7 @@
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:Comment sap:VirtualizedContainerService.HintSize="452,167" sap2010:WorkflowViewState.IdRef="Comment_1" Text="A student qualifies if AverageMark &gt;= in_intMinMark AND HouseholdIncome &lt;= in_dblMaxIncome. Thresholds come from Main.xaml variables so they can be tuned without editing activities." />
+    <ui:Comment sap:VirtualizedContainerService.HintSize="452,284" sap2010:WorkflowViewState.IdRef="Comment_1" Text="Source: dt_Applications plus thresholds intMinMark and dblMaxIncome from Main. &#xD;&#xA;&#xD;&#xA;Reason: to apply the bursary rules (AverageMark &gt;= 70 AND HouseholdIncome &lt;= 150000) in one place so they are easy to change. &#xD;&#xA;&#xD;&#xA;Outcome: dt_Eligible contains only the qualifying applicants and intEligibleCount holds the total." />
     <Assign sap2010:Annotation.AnnotationText="Builds the dynamic filter string from the threshold arguments." DisplayName="Assign - Build Filter Expression" sap:VirtualizedContainerService.HintSize="452,220" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[strFilter]</OutArgument>

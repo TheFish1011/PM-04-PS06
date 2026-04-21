@@ -86,7 +86,7 @@
       <AssemblyReference>System.Runtime.Numerics</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="2376,1499" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="2376,1538" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Int32" sap2010:Annotation.AnnotationText="Count of eligible applicants, used in the log summary line." Default="0" Name="intEligibleCount" />
       <Variable x:TypeArguments="x:Boolean" sap2010:Annotation.AnnotationText="Flag set by ValidateData. Filter only runs if this is True." Default="False" Name="isValidData" />
@@ -103,7 +103,7 @@
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:Comment sap:VirtualizedContainerService.HintSize="452,186" sap2010:WorkflowViewState.IdRef="Comment_1" Text="Main orchestrator for PS06 Bursary Applications. Reads input → validates → filters by business rules → writes output CSV and log. All thresholds and paths are variables so they can be changed without touching activities." />
+    <ui:Comment sap:VirtualizedContainerService.HintSize="452,225" sap2010:WorkflowViewState.IdRef="Comment_1" Text="Source: project variables declared in Main.xaml. &#xD;&#xA;&#xD;&#xA;Reason: to orchestrate the PPD flow (Read → Validate → Filter → Write) in one place. &#xD;&#xA;&#xD;&#xA;Outcome: every workflow is invoked in order with the correct arguments." />
     <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="Invoke - ReadCSVData" sap:VirtualizedContainerService.HintSize="452,177" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Workflows\ReadCSVData.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_dt_Applications">[dt_Applications]</OutArgument>

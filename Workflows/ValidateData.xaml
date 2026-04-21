@@ -93,13 +93,13 @@
       <AssemblyReference>System.Linq.Async</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Checks required columns exist and are not empty; sets isValidData" sap:VirtualizedContainerService.HintSize="2376,2644" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Checks required columns exist and are not empty; sets isValidData" sap:VirtualizedContainerService.HintSize="2376,2761" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:Comment sap:VirtualizedContainerService.HintSize="488,147" sap2010:WorkflowViewState.IdRef="Comment_1" Text="Confirm applicants were loaded and the expected columns exist (AverageMark, HouseholdIncome). Prevents the bot from running on an empty or malformed file." />
+    <ui:Comment sap:VirtualizedContainerService.HintSize="488,264" sap2010:WorkflowViewState.IdRef="Comment_1" Text="Source: dt_Applications loaded by ReadCSVData. &#xD;&#xA;&#xD;&#xA;Reason: to make sure rows exist and the required columns (AverageMark, HouseholdIncome) are present before the filter runs. &#xD;&#xA;&#xD;&#xA;Outcome: isValidData set to True or False so Main.xaml knows whether to continue." />
     <If sap2010:Annotation.AnnotationText="Guards against an empty input file." Condition="[in_dt_Applications.Rows.Count &gt; 0]" DisplayName="IF - Check Row Count Greater Than Zero" sap:VirtualizedContainerService.HintSize="488,2277" sap2010:WorkflowViewState.IdRef="If_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
