@@ -1,0 +1,6 @@
+{
+  "Name": "PM04-PS06",
+  "ProjectType": "Process",
+  "Description": "Organize projects for efficiency and easy maintenance",
+  "MainFile": "Main.xaml"
+}
