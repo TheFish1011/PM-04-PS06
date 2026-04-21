@@ -1,6 +1,6 @@
 <Activity mc:Ignorable="sap sap2010" x:Class="ValidateData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
-    <x:Property sap2010:Annotation.AnnotationText="Source: set inside this workflow based on the validation checks. &#xD;&#xA;&#xD;&#xA;Reason: tell Main whether the data is safe to filter. &#xD;&#xA;&#xD;&#xA;Outcome: Main uses it to decide whether to continue or abort." Name="out_isValidData" Type="OutArgument(x:Boolean)" />
+    <x:Property sap2010:Annotation.AnnotationText="Source: set inside this workflow based on the validation checks. &#xD;&#xA;&#xD;&#xA;Reason: tell Main whether the data is safe to process. &#xD;&#xA;&#xD;&#xA;Outcome: Main uses it to decide whether to continue or abort." Name="out_isValidData" Type="OutArgument(x:Boolean)" />
     <x:Property sap2010:Annotation.AnnotationText="Source: dt_Applications from Main (loaded by ReadCSVData). &#xD;&#xA;&#xD;&#xA;Reason: the validation checks need the full applicant table. &#xD;&#xA;&#xD;&#xA;Outcome: inspected for row count and required columns." Name="in_dt_Applications" Type="InArgument(sd:DataTable)" />
   </x:Members>
   <VisualBasic.Settings>
@@ -93,13 +93,13 @@
       <AssemblyReference>System.Linq.Async</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Checks required columns exist and are not empty; sets isValidData" sap:VirtualizedContainerService.HintSize="2376,2982" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Checks required columns exist and are not empty; sets isValidData" sap:VirtualizedContainerService.HintSize="2376,2885" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:Comment sap:VirtualizedContainerService.HintSize="488,264" sap2010:WorkflowViewState.IdRef="Comment_1" Text="Source: dt_Applications loaded by ReadCSVData. &#xD;&#xA;&#xD;&#xA;Reason: to make sure rows exist and the required columns (AverageMark, HouseholdIncome) are present before the filter runs. &#xD;&#xA;&#xD;&#xA;Outcome: isValidData set to True or False so Main.xaml knows whether to continue." />
+    <ui:Comment sap:VirtualizedContainerService.HintSize="488,167" sap2010:WorkflowViewState.IdRef="Comment_1" Text="Validation: Confirm applicants were loaded and the expected columns exist (AverageMark, HouseholdIncome). Prevents the bot from running on an empty or malformed file." />
     <If sap2010:Annotation.AnnotationText="Source: in_dt_Applications from ReadCSVData. &#xD;&#xA;&#xD;&#xA;Reason: an empty DataTable would cause the filter to fail silently. &#xD;&#xA;&#xD;&#xA;Outcome: bot stops safely if no rows are present." Condition="[in_dt_Applications.Rows.Count &gt; 0]" DisplayName="IF - Check Row Count Greater Than Zero" sap:VirtualizedContainerService.HintSize="488,2419" sap2010:WorkflowViewState.IdRef="If_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -137,7 +137,7 @@
                     <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <Assign sap2010:Annotation.AnnotationText="Confirms data is valid as both validation checks has been passed.&#xD;&#xA;- Input file is not empty&#xD;&#xA;- Colomns exist&#xD;&#xA;&#xD;&#xA;Export Result to Main Workflow" DisplayName="Assign - Colomns Exist Confirm" sap:VirtualizedContainerService.HintSize="416,285" sap2010:WorkflowViewState.IdRef="Assign_2">
+                <Assign sap2010:Annotation.AnnotationText="Confirms data is valid as both validation checks has been passed.&#xA;- Input file is not empty&#xA;- Colomns exist&#xA;&#xA;Export Result to Main Workflow" DisplayName="Assign - Colomns Exist Confirm" sap:VirtualizedContainerService.HintSize="416,285" sap2010:WorkflowViewState.IdRef="Assign_2">
                   <Assign.To>
                     <OutArgument x:TypeArguments="x:Boolean">[out_isValidData]</OutArgument>
                   </Assign.To>
@@ -167,7 +167,7 @@
                     <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <Assign sap2010:Annotation.AnnotationText="Confirms data is invalid as colomns does exist&#xD;&#xA;&#xD;&#xA;Export Result to Main Workflow" DisplayName="Assign - Colomns does not exist" sap:VirtualizedContainerService.HintSize="416,236" sap2010:WorkflowViewState.IdRef="Assign_3">
+                <Assign sap2010:Annotation.AnnotationText="Confirms data is invalid as colomns does exist&#xA;&#xA;Export Result to Main Workflow" DisplayName="Assign - Colomns does not exist" sap:VirtualizedContainerService.HintSize="416,236" sap2010:WorkflowViewState.IdRef="Assign_3">
                   <Assign.To>
                     <OutArgument x:TypeArguments="x:Boolean">[out_isValidData]</OutArgument>
                   </Assign.To>
@@ -200,7 +200,7 @@
               <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Assign sap2010:Annotation.AnnotationText="Confirms data is invalid as data table is empty.&#xD;&#xA;&#xD;&#xA;Export Result to Main Workflow" DisplayName="Assign - Data is not valid" sap:VirtualizedContainerService.HintSize="452,236" sap2010:WorkflowViewState.IdRef="Assign_1">
+          <Assign sap2010:Annotation.AnnotationText="Confirms data is invalid as data table is empty.&#xA;&#xA;Export Result to Main Workflow" DisplayName="Assign - Data is not valid" sap:VirtualizedContainerService.HintSize="452,236" sap2010:WorkflowViewState.IdRef="Assign_1">
             <Assign.To>
               <OutArgument x:TypeArguments="x:Boolean">[out_isValidData]</OutArgument>
             </Assign.To>
@@ -223,7 +223,7 @@
         </Sequence>
       </If.Else>
     </If>
-    <ui:LogMessage sap2010:Annotation.AnnotationText="Source: out_isValidData from the previous steps. &#xD;&#xA;&#xD;&#xA;Reason: audit trail of whether validation passed on this run. &#xD;&#xA;&#xD;&#xA;Outcome: Info entry written to the execution log." DisplayName="Log - Validation Result" sap:VirtualizedContainerService.HintSize="488,276" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Validation complete. isValidData = &quot; + out_isValidData.ToString]">
+    <ui:LogMessage sap2010:Annotation.AnnotationText="Source: out_isValidData from the previous steps. &#xA;&#xA;Reason: audit trail of whether validation passed on this run. &#xA;&#xA;Outcome: Info entry written to the execution log." DisplayName="Log - Validation Result" sap:VirtualizedContainerService.HintSize="488,276" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Validation complete. isValidData = &quot; + out_isValidData.ToString]">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>

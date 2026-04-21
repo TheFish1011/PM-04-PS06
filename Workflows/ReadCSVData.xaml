@@ -1,7 +1,7 @@
 <Activity mc:Ignorable="sap sap2010" x:Class="ReadCSVData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property sap2010:Annotation.AnnotationText="Source: built by the Read CSV activity in this workflow. &#xD;&#xA;&#xD;&#xA;Reason: hand the loaded applicants back to Main. &#xD;&#xA;&#xD;&#xA;Outcome: Main assigns it to dt_Applications for downstream use." Name="out_dt_Applications" Type="OutArgument(sd:DataTable)" />
-    <x:Property sap2010:Annotation.AnnotationText="Source: strCSVPath from Main. &#xD;&#xA;&#xD;&#xA;Reason: tells this workflow where to find the input file. &#xD;&#xA;&#xD;&#xA;Outcome: used by the Read CSV activity." Name="in_strCSVPath" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Source: dict_Config(&quot;CSVPath&quot;).ToString from Main. &#xD;&#xA;&#xD;&#xA;Reason: tells this workflow where to find the input file. &#xD;&#xA;&#xD;&#xA;Outcome: used by the Read CSV activity." Name="in_strCSVPath" Type="InArgument(x:String)" />
   </x:Members>
   <VisualBasic.Settings>
     <x:Null />
@@ -99,21 +99,21 @@
       <AssemblyReference>System.Linq.Async</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Reads bursary_applications.csv into a DataTable" sap:VirtualizedContainerService.HintSize="2376,837" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Reads bursary_applications.csv into a DataTable" sap:VirtualizedContainerService.HintSize="2382,786.6566666666666" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:Comment sap:VirtualizedContainerService.HintSize="450,225" sap2010:WorkflowViewState.IdRef="Comment_1" Text="Source: bursary_applications.csv in Data\Input\ supplied by DHET.&#xD;&#xA;&#xD;&#xA;Reason: downstream workflows need the applicants as a DataTable to process them. &#xD;&#xA;&#xD;&#xA;Outcome: dt_Applications populated with all applicant records." />
-    <ui:ReadCsvFile PathResource="{x:Null}" sap2010:Annotation.AnnotationText="Source: file at in_strCSVPath. &#xD;&#xA;&#xD;&#xA;Reason: need the CSV rows as a DataTable for filtering. &#xD;&#xA;&#xD;&#xA;Outcome: out_dt_Applications populated with every applicant.&#xD;&#xA;" DataTable="[out_dt_Applications]" Delimitator="Comma" DelimitatorForViewModel="Comma" DisplayName="Read CSV - Load Bursary Applications" FilePath="[in_strCSVPath]" sap:VirtualizedContainerService.HintSize="450,313" sap2010:WorkflowViewState.IdRef="ReadCsvFile_1">
+    <ui:Comment sap:VirtualizedContainerService.HintSize="450,147" sap2010:WorkflowViewState.IdRef="Comment_1" Text="Data Source: bursary_applications.csv from DHET. Reads the CSV into a DataTable so the rest of the bot can work with applicant records." />
+    <ui:ReadCsvFile PathResource="{x:Null}" sap2010:Annotation.AnnotationText="Source: file at in_strCSVPath. &#xD;&#xA;&#xD;&#xA;Reason: need the CSV rows as a DataTable for filtering. &#xD;&#xA;&#xD;&#xA;Outcome: out_dt_Applications populated with every applicant." DataTable="[out_dt_Applications]" Delimitator="Comma" DelimitatorForViewModel="Comma" DisplayName="Read CSV - Load Bursary Applications" FilePath="[in_strCSVPath]" sap:VirtualizedContainerService.HintSize="450,296" sap2010:WorkflowViewState.IdRef="ReadCsvFile_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:ReadCsvFile>
-    <ui:LogMessage sap2010:Annotation.AnnotationText="Source: out_dt_Applications just populated. &#xD;&#xA;&#xD;&#xA;Reason: traceability — confirm the load succeeded and record the row count. &#xD;&#xA;&#xD;&#xA;Outcome: Info entry written to the execution log." DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="450,276" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Loaded &quot; + out_dt_Applications.Rows.Count.ToString + &quot; applications from CSV.&quot;]">
+    <ui:LogMessage sap2010:Annotation.AnnotationText="ource: out_dt_Applications just populated. &#xD;&#xA;&#xD;&#xA;Reason: traceability — confirm the load succeeded and record the row count. &#xD;&#xA;&#xD;&#xA;Outcome: Info entry written to the execution log." DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="450,276" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Loaded &quot; + out_dt_Applications.Rows.Count.ToString + &quot; applications from CSV.&quot;]">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>

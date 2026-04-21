@@ -84,30 +84,26 @@
       <AssemblyReference>System.Linq.Expressions</AssemblyReference>
       <AssemblyReference>System.Data.SqlClient</AssemblyReference>
       <AssemblyReference>System.Runtime.Numerics</AssemblyReference>
+      <AssemblyReference>UiPath.Workflow</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="2376,2277" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="2376,2735" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
-      <Variable x:TypeArguments="x:Int32" sap2010:Annotation.AnnotationText="Source: populated by FilterApplicants. &#xD;&#xA;&#xD;&#xA;Reason: to record how many applicants qualified. &#xD;&#xA;&#xD;&#xA;Outcome: passed into WriteResults and included in the log summary line." Default="0" Name="intEligibleCount" />
-      <Variable x:TypeArguments="x:Boolean" sap2010:Annotation.AnnotationText="Source: set by ValidateData. &#xD;&#xA;&#xD;&#xA;Reason: to signal whether the input data is safe to filter. &#xD;&#xA;&#xD;&#xA;Outcome: Main only invokes the filter if this is True." Default="False" Name="isValidData" />
-      <Variable x:TypeArguments="sd:DataTable" sap2010:Annotation.AnnotationText="Source: populated by FilterApplicants with the rows that match both rules. &#xD;&#xA;&#xD;&#xA;Reason: to separate eligible applicants from the full list. &#xD;&#xA;&#xD;&#xA;Outcome: passed into WriteResults to be written to CSV." Name="dt_Eligible" />
-      <Variable x:TypeArguments="sd:DataTable" sap2010:Annotation.AnnotationText="Source: populated by ReadCSVData from the input CSV. &#xD;&#xA;&#xD;&#xA;Reason: to hold all loaded applicants in memory. &#xD;&#xA;&#xD;&#xA;Outcome: passed into ValidateData and FilterApplicants for further processing." Name="dt_Applications" />
-      <Variable x:TypeArguments="x:Double" sap2010:Annotation.AnnotationText="Source: bursary policy threshold set in Main. &#xD;&#xA;&#xD;&#xA;Reason: business rule for household income; kept as a variable to avoid hard-coding. &#xD;&#xA;&#xD;&#xA;Outcome: passed into FilterApplicants as the maximum HouseholdIncome." Default="150000" Name="dblMaxIncome" />
-      <Variable x:TypeArguments="x:Int32" sap2010:Annotation.AnnotationText="Source: bursary policy threshold set in Main. &#xD;&#xA;&#xD;&#xA;Reason: business rule for academic merit; kept as a variable so policy changes don't require editing activities. &#xD;&#xA;&#xD;&#xA;Outcome: passed into FilterApplicants as the minimum AverageMark." Default="70" Name="intMinMark" />
-      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Source: hardcoded once here in Main. &#xD;&#xA;&#xD;&#xA;Reason: to keep the audit log path in one central place. &#xD;&#xA;&#xD;&#xA;Outcome: passed into WriteResults so a run summary line can be appended." Default="Data\Output\ResultsLog.txt" Name="strLogPath" />
-      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Source: hardcoded once here in Main. &#xD;&#xA;&#xD;&#xA;Reason: to keep the output path in one central place. &#xD;&#xA;&#xD;&#xA;Outcome: passed into WriteResults so the eligible CSV can be saved." Default="Data\Output\Eligible_Applicants.csv" Name="strOutputPath" />
-      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Source: hardcoded once here in Main. &#xD;&#xA;&#xD;&#xA;Reason: to keep the input path in one central place. &#xD;&#xA;&#xD;&#xA;Outcome: passed into ReadCSVData so the CSV can be loaded." Default="Data\Input\bursary_applications.csv" Name="strCSVPath" />
+      <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Name="dict_Config" />
+      <Variable x:TypeArguments="x:Int32" sap2010:Annotation.AnnotationText="Source: populated by FilterApplicants. &#xA;&#xA;Reason: to record how many applicants qualified. &#xA;&#xA;Outcome: passed into WriteResults and included in the log summary line." Default="0" Name="intEligibleCount" />
+      <Variable x:TypeArguments="x:Boolean" sap2010:Annotation.AnnotationText="Source: set by ValidateData. &#xA;&#xA;Reason: to signal whether the input data is safe to filter. &#xA;&#xA;Outcome: Main only invokes the filter if this is True." Default="False" Name="isValidData" />
+      <Variable x:TypeArguments="sd:DataTable" sap2010:Annotation.AnnotationText="Source: populated by FilterApplicants with the rows that match both rules. &#xA;&#xA;Reason: to separate eligible applicants from the full list. &#xA;&#xA;Outcome: passed into WriteResults to be written to CSV." Name="dt_Eligible" />
+      <Variable x:TypeArguments="sd:DataTable" sap2010:Annotation.AnnotationText="Source: populated by ReadCSVData from the input CSV. &#xA;&#xA;Reason: to hold all loaded applicants in memory. &#xA;&#xA;Outcome: passed into ValidateData and FilterApplicants for further processing." Name="dt_Applications" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:Comment sap:VirtualizedContainerService.HintSize="452,225" sap2010:WorkflowViewState.IdRef="Comment_1" Text="Source: project variables declared in Main.xaml. &#xD;&#xA;&#xD;&#xA;Reason: to orchestrate the PPD flow (Read → Validate → Filter → Write) in one place. &#xD;&#xA;&#xD;&#xA;Outcome: every workflow is invoked in order with the correct arguments." />
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="Source: input CSV referenced by strCSVPath. &#xD;&#xA;&#xD;&#xA;Reason: PPD Step 1 — load the bursary applications before anything else can happen. &#xD;&#xA;&#xD;&#xA;Outcome: dt_Applications populated for downstream steps." DisplayName="Invoke - ReadCSVData" sap:VirtualizedContainerService.HintSize="452,303" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Workflows\ReadCSVData.xaml">
+    <ui:Comment sap:VirtualizedContainerService.HintSize="452,362" sap2010:WorkflowViewState.IdRef="Comment_1" Text="Source: first activity in Main. &#xD;&#xA;&#xD;&#xA;Reason: document the REFramework state flow for future developers. &#xD;&#xA;&#xD;&#xA;Outcome: reader follows the Init → Get → Process → End pattern.&#xD;&#xA;&#xD;&#xA;REFramework-style orchestrator for PS06 Bursary Applications. Flow: Init (load Config) → Get Transaction Data (read + validate CSV) → Process Transaction (per-row filter with Try/Catch) → End Process (write output and log). All paths and thresholds come from dict_Config — nothing is hard-coded." />
+    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="Source: Init workflow. &#xD;&#xA;&#xD;&#xA;Reason: REFramework Init state — load all settings up front. &#xD;&#xA;&#xD;&#xA;Outcome: dict_Config populated with paths and thresholds." DisplayName="Invoke InitAllSettings" sap:VirtualizedContainerService.HintSize="452,303" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Workflows\InitAllSettings.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_dt_Applications">[dt_Applications]</OutArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_strCSVPath">[strCSVPath]</InArgument>
+        <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="out_dict_Config">[dict_Config]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -115,7 +111,18 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="Source: dt_Applications from step 2. &#xD;&#xA;&#xD;&#xA;Reason: PPD Step 2 — don't run the filter on empty or malformed data. &#xD;&#xA;&#xD;&#xA;Outcome: isValidData set True or False." DisplayName="Invoke ValidateData" sap:VirtualizedContainerService.HintSize="452,287" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Workflows\ValidateData.xaml">
+    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="Source: CSV path looked up from dict_Config. &#xD;&#xA;&#xD;&#xA;Reason: REFramework GetTransactionData — fetch the batch of transactions. &#xD;&#xA;&#xD;&#xA;Outcome: dt_Applications populated." DisplayName="Invoke - ReadCSVData" sap:VirtualizedContainerService.HintSize="452,287" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Workflows\ReadCSVData.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_dt_Applications">[dt_Applications]</OutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_strCSVPath">[dict_Config("CSVPath").ToString]</InArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:InvokeWorkflowFile>
+    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="Source: dt_Applications from step 3. &#xD;&#xA;&#xD;&#xA;Reason: REFramework pattern — validate the batch before processing. &#xD;&#xA;&#xD;&#xA;Outcome: isValidData set True or False." DisplayName="Invoke ValidateData" sap:VirtualizedContainerService.HintSize="452,287" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Workflows\ValidateData.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <OutArgument x:TypeArguments="x:Boolean" x:Key="out_isValidData">[isValidData]</OutArgument>
         <InArgument x:TypeArguments="sd:DataTable" x:Key="in_dt_Applications">[dt_Applications]</InArgument>
@@ -126,25 +133,25 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:InvokeWorkflowFile>
-    <If sap2010:Annotation.AnnotationText="Source: isValidData from step 3. &#xD;&#xA;&#xD;&#xA;Reason: stop the bot safely if the input data is unusable. &#xD;&#xA;&#xD;&#xA;Outcome: bot only proceeds to filter when the data is valid." Condition="[isValidData = True]" DisplayName="IF - Proceed Only If Valid" sap:VirtualizedContainerService.HintSize="452,1439" sap2010:WorkflowViewState.IdRef="If_1">
+    <If sap2010:Annotation.AnnotationText="Source: isValidData from step 3. &#xA;&#xA;Reason: stop the bot safely if the input data is unusable. &#xA;&#xA;Outcome: bot only proceeds to filter when the data is valid." Condition="[isValidData = True]" DisplayName="IF - Proceed Only If Valid" sap:VirtualizedContainerService.HintSize="452,1473" sap2010:WorkflowViewState.IdRef="If_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <Sequence DisplayName="Then - Data is Valid" sap:VirtualizedContainerService.HintSize="450,958" sap2010:WorkflowViewState.IdRef="Sequence_2">
+        <Sequence DisplayName="Then - Data is Valid" sap:VirtualizedContainerService.HintSize="450,992" sap2010:WorkflowViewState.IdRef="Sequence_2">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="Source: dt_Applications plus the intMinMark and dblMaxIncome thresholds. &#xD;&#xA;&#xD;&#xA;Reason: PPD Step 3 — apply the bursary rules. &#xD;&#xA;&#xD;&#xA;Outcome: dt_Eligible and intEligibleCount populated." DisplayName="Invoke Workflow - FilterApplicants" sap:VirtualizedContainerService.HintSize="416,303" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Workflows\FilterApplicants.xaml">
+          <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="Source: dt_Applications plus thresholds from dict_Config. &#xD;&#xA;&#xD;&#xA;Reason: REFramework Process state — apply business rules to each transaction. &#xD;&#xA;&#xD;&#xA;Outcome: dt_Eligible and intEligibleCount populated." DisplayName="Invoke Workflow - FilterApplicants" sap:VirtualizedContainerService.HintSize="416,320" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Workflows\FilterApplicants.xaml">
             <ui:InvokeWorkflowFile.Arguments>
               <OutArgument x:TypeArguments="x:Int32" x:Key="out_intEligibleCount">[intEligibleCount]</OutArgument>
               <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_dt_Eligible">[dt_Eligible]</OutArgument>
-              <InArgument x:TypeArguments="x:Double" x:Key="in_dblMaxIncome">[dblMaxIncome]</InArgument>
-              <InArgument x:TypeArguments="x:Int32" x:Key="in_intMinMark">[intMinMark]</InArgument>
+              <InArgument x:TypeArguments="x:Double" x:Key="in_dblMaxIncome">[CType(dict_Config("MaxIncome"), Double)]</InArgument>
+              <InArgument x:TypeArguments="x:Int32" x:Key="in_intMinMark">[CType(dict_Config("MinMark"), Int32)]</InArgument>
               <InArgument x:TypeArguments="sd:DataTable" x:Key="in_dt_Applications">[dt_Applications]</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
             <sap:WorkflowViewStateService.ViewState>
@@ -153,12 +160,12 @@
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
           </ui:InvokeWorkflowFile>
-          <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="Source: dt_Eligible plus the output and log paths. &#xD;&#xA;&#xD;&#xA;Reason: PPD Steps 4 + 5 — persist the result and record an audit line. &#xD;&#xA;&#xD;&#xA;Outcome: Eligible_Applicants.csv saved and ResultsLog.txt updated." DisplayName="Invoke Workflow - WriteResults" sap:VirtualizedContainerService.HintSize="416,303" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Workflows\WriteResults.xaml">
+          <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="Source: dt_Eligible plus output and log paths from dict_Config. &#xD;&#xA;&#xD;&#xA;Reason: REFramework End state — persist results and write the audit line. &#xD;&#xA;&#xD;&#xA;Outcome: Eligible_Applicants.csv saved and ResultsLog.txt updated." DisplayName="Invoke Workflow - WriteResults" sap:VirtualizedContainerService.HintSize="416,320" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Workflows\WriteResults.xaml">
             <ui:InvokeWorkflowFile.Arguments>
               <InArgument x:TypeArguments="x:Int32" x:Key="in_intTotalCount">[dt_Applications.Rows.Count]</InArgument>
               <InArgument x:TypeArguments="x:Int32" x:Key="in_intEligibleCount">[intEligibleCount]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_strLogPath">[strLogPath]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_strOutputPath">[strOutputPath]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strLogPath">[dict_Config("LogPath").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strOutputPath">[dict_Config("OutputPath").ToString]</InArgument>
               <InArgument x:TypeArguments="sd:DataTable" x:Key="in_dt_Eligible">[dt_Eligible]</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
             <sap:WorkflowViewStateService.ViewState>
@@ -167,7 +174,7 @@
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
           </ui:InvokeWorkflowFile>
-          <ui:LogMessage sap2010:Annotation.AnnotationText="Source: end of Main sequence. &#xD;&#xA;&#xD;&#xA;Reason: signal that the whole PPD flow finished without aborting. &#xD;&#xA;&#xD;&#xA;Outcome: Info entry marks a clean run in the execution log." DisplayName="Log Message - Workflow Complete" sap:VirtualizedContainerService.HintSize="416,292" sap2010:WorkflowViewState.IdRef="LogMessage_2" Message="[&quot;PS06 bursary processing completed successfully.&quot;]">
+          <ui:LogMessage sap2010:Annotation.AnnotationText="Source: end of Main sequence. &#xD;&#xA;&#xD;&#xA;Reason: signal that the whole REFramework flow finished. &#xD;&#xA;&#xD;&#xA;Outcome: Info entry marks a clean run in the execution log." DisplayName="Log Message - Workflow Complete" sap:VirtualizedContainerService.HintSize="416,292" sap2010:WorkflowViewState.IdRef="LogMessage_2" Message="[&quot;PS06 bursary processing completed successfully.&quot;]">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
