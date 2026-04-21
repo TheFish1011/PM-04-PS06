@@ -102,7 +102,7 @@
       <AssemblyReference>System.Runtime.Numerics</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Writes eligible applicants to CSV and appends a summary line to the log" sap:VirtualizedContainerService.HintSize="2376,1248" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Writes eligible applicants to CSV and appends a summary line to the log" sap:VirtualizedContainerService.HintSize="2376,1557" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Source: built inside this workflow from DateTime.Now plus the count arguments. &#xD;&#xA;&#xD;&#xA;Reason: we need to assemble the summary text before appending it. &#xD;&#xA;&#xD;&#xA;Outcome: passed to the Append Line activity and written to ResultsLog.txt." Name="strLogLine" />
     </Sequence.Variables>
@@ -112,14 +112,14 @@
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <ui:Comment sap:VirtualizedContainerService.HintSize="450,264" sap2010:WorkflowViewState.IdRef="Comment_1" Text="Source: dt_Eligible from FilterApplicants and the paths from Main. &#xD;&#xA;&#xD;&#xA;Reason: DHET needs a machine-readable list of qualifying applicants plus an audit trail of each run. &#xD;&#xA;&#xD;&#xA;Outcome: Eligible_Applicants.csv is written and a summary line is appended to ResultsLog.txt." />
-    <ui:AppendWriteCsvFile PathResource="{x:Null}" AddHeaders="True" sap2010:Annotation.AnnotationText="Writes the eligible applicants in the same column format as the input CSV." CsvAction="Write" DataTable="[in_dt_Eligible]" Delimitator="Comma" DelimitatorForViewModel="Comma" DisplayName="Write CSV - Save Eligible Applicants" FilePath="[in_strOutputPath]" sap:VirtualizedContainerService.HintSize="450,318" sap2010:WorkflowViewState.IdRef="AppendWriteCsvFile_1" ShouldQuote="True">
+    <ui:AppendWriteCsvFile PathResource="{x:Null}" AddHeaders="True" sap2010:Annotation.AnnotationText="Source: in_dt_Eligible from FilterApplicants written to the path in in_strOutputPath. &#xD;&#xA;&#xD;&#xA;Reason: DHET needs a machine-readable list of qualifying applicants. &#xD;&#xA;&#xD;&#xA;Outcome: Eligible_Applicants.csv created in Data\Output\." CsvAction="Write" DataTable="[in_dt_Eligible]" Delimitator="Comma" DelimitatorForViewModel="Comma" DisplayName="Write CSV - Save Eligible Applicants" FilePath="[in_strOutputPath]" sap:VirtualizedContainerService.HintSize="450,416" sap2010:WorkflowViewState.IdRef="AppendWriteCsvFile_1" ShouldQuote="True">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:AppendWriteCsvFile>
-    <Assign sap2010:Annotation.AnnotationText="Constructs a timestamped summary string for the log." DisplayName="Assign - Build Log Line" sap:VirtualizedContainerService.HintSize="450,220" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign sap2010:Annotation.AnnotationText="Source: DateTime.Now, in_intTotalCount and in_intEligibleCount. &#xD;&#xA;&#xD;&#xA;Reason: compose a single timestamped summary per run. &#xD;&#xA;&#xD;&#xA;Outcome: strLogLine holds the audit text." DisplayName="Assign - Build Log Line" sap:VirtualizedContainerService.HintSize="450,301" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[strLogLine]</OutArgument>
       </Assign.To>
@@ -132,14 +132,14 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </Assign>
-    <ui:AppendLine File="{x:Null}" sap2010:Annotation.AnnotationText="Appends one run summary line to ResultsLog.txt (audit trail)." DisplayName="Write to Log File" FileName="[in_strLogPath]" sap:VirtualizedContainerService.HintSize="450,212" sap2010:WorkflowViewState.IdRef="AppendLine_1" Text="[strLogLine]" UseDefaultEncoding="False">
+    <ui:AppendLine File="{x:Null}" sap2010:Annotation.AnnotationText="Source: strLogLine appended to the file at in_strLogPath. &#xD;&#xA;&#xD;&#xA;Reason: DHET needs an audit trail of every run. &#xD;&#xA;&#xD;&#xA;Outcome: one new line added to ResultsLog.txt." DisplayName="Append Line - Write to Log File" FileName="[in_strLogPath]" sap:VirtualizedContainerService.HintSize="450,277" sap2010:WorkflowViewState.IdRef="AppendLine_1" Text="[strLogLine]" UseDefaultEncoding="False">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:AppendLine>
-    <ui:LogMessage sap2010:Annotation.AnnotationText="Also writes the summary to the UiPath execution log." DisplayName="Log - Run Summary" sap:VirtualizedContainerService.HintSize="450,211" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Run complete. &quot; + strLogLine]">
+    <ui:LogMessage sap2010:Annotation.AnnotationText="Source: strLogLine. &#xD;&#xA;&#xD;&#xA;Reason: also record the run in the UiPath execution log for quick inspection. &#xD;&#xA;&#xD;&#xA;Outcome: Info entry mirrors the ResultsLog line." DisplayName="Log - Run Summary" sap:VirtualizedContainerService.HintSize="450,276" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Run complete. &quot; + strLogLine]">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>

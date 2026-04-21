@@ -86,7 +86,7 @@
       <AssemblyReference>System.Runtime.Numerics</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="2376,1569" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="2376,2277" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Int32" sap2010:Annotation.AnnotationText="Source: populated by FilterApplicants. &#xD;&#xA;&#xD;&#xA;Reason: to record how many applicants qualified. &#xD;&#xA;&#xD;&#xA;Outcome: passed into WriteResults and included in the log summary line." Default="0" Name="intEligibleCount" />
       <Variable x:TypeArguments="x:Boolean" sap2010:Annotation.AnnotationText="Source: set by ValidateData. &#xD;&#xA;&#xD;&#xA;Reason: to signal whether the input data is safe to filter. &#xD;&#xA;&#xD;&#xA;Outcome: Main only invokes the filter if this is True." Default="False" Name="isValidData" />
@@ -104,7 +104,7 @@
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <ui:Comment sap:VirtualizedContainerService.HintSize="452,225" sap2010:WorkflowViewState.IdRef="Comment_1" Text="Source: project variables declared in Main.xaml. &#xD;&#xA;&#xD;&#xA;Reason: to orchestrate the PPD flow (Read → Validate → Filter → Write) in one place. &#xD;&#xA;&#xD;&#xA;Outcome: every workflow is invoked in order with the correct arguments." />
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="" DisplayName="Invoke - ReadCSVData" sap:VirtualizedContainerService.HintSize="452,208" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Workflows\ReadCSVData.xaml">
+    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="Source: input CSV referenced by strCSVPath. &#xD;&#xA;&#xD;&#xA;Reason: PPD Step 1 — load the bursary applications before anything else can happen. &#xD;&#xA;&#xD;&#xA;Outcome: dt_Applications populated for downstream steps." DisplayName="Invoke - ReadCSVData" sap:VirtualizedContainerService.HintSize="452,303" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Workflows\ReadCSVData.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_dt_Applications">[dt_Applications]</OutArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_strCSVPath">[strCSVPath]</InArgument>
@@ -115,21 +115,31 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="Invoke ValidateData" sap:VirtualizedContainerService.HintSize="452,177" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Workflows\ValidateData.xaml">
+    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="Source: dt_Applications from step 2. &#xD;&#xA;&#xD;&#xA;Reason: PPD Step 2 — don't run the filter on empty or malformed data. &#xD;&#xA;&#xD;&#xA;Outcome: isValidData set True or False." DisplayName="Invoke ValidateData" sap:VirtualizedContainerService.HintSize="452,287" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Workflows\ValidateData.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <OutArgument x:TypeArguments="x:Boolean" x:Key="out_isValidData">[isValidData]</OutArgument>
         <InArgument x:TypeArguments="sd:DataTable" x:Key="in_dt_Applications">[dt_Applications]</InArgument>
       </ui:InvokeWorkflowFile.Arguments>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
     </ui:InvokeWorkflowFile>
-    <If Condition="[isValidData = True]" DisplayName="IF - Proceed Only If Valid" sap:VirtualizedContainerService.HintSize="452,936" sap2010:WorkflowViewState.IdRef="If_1">
+    <If sap2010:Annotation.AnnotationText="Source: isValidData from step 3. &#xD;&#xA;&#xD;&#xA;Reason: stop the bot safely if the input data is unusable. &#xD;&#xA;&#xD;&#xA;Outcome: bot only proceeds to filter when the data is valid." Condition="[isValidData = True]" DisplayName="IF - Proceed Only If Valid" sap:VirtualizedContainerService.HintSize="452,1439" sap2010:WorkflowViewState.IdRef="If_1">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <Sequence DisplayName="Then - Data is Valid" sap:VirtualizedContainerService.HintSize="450,580" sap2010:WorkflowViewState.IdRef="Sequence_2">
+        <Sequence DisplayName="Then - Data is Valid" sap:VirtualizedContainerService.HintSize="450,958" sap2010:WorkflowViewState.IdRef="Sequence_2">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="Invoke Workflow - FilterApplicants" sap:VirtualizedContainerService.HintSize="416,177" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Workflows\FilterApplicants.xaml">
+          <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="Source: dt_Applications plus the intMinMark and dblMaxIncome thresholds. &#xD;&#xA;&#xD;&#xA;Reason: PPD Step 3 — apply the bursary rules. &#xD;&#xA;&#xD;&#xA;Outcome: dt_Eligible and intEligibleCount populated." DisplayName="Invoke Workflow - FilterApplicants" sap:VirtualizedContainerService.HintSize="416,303" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Workflows\FilterApplicants.xaml">
             <ui:InvokeWorkflowFile.Arguments>
               <OutArgument x:TypeArguments="x:Int32" x:Key="out_intEligibleCount">[intEligibleCount]</OutArgument>
               <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_dt_Eligible">[dt_Eligible]</OutArgument>
@@ -137,8 +147,13 @@
               <InArgument x:TypeArguments="x:Int32" x:Key="in_intMinMark">[intMinMark]</InArgument>
               <InArgument x:TypeArguments="sd:DataTable" x:Key="in_dt_Applications">[dt_Applications]</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
           </ui:InvokeWorkflowFile>
-          <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="Invoke Workflow - WriteResults" sap:VirtualizedContainerService.HintSize="416,177" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Workflows\WriteResults.xaml">
+          <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="Source: dt_Eligible plus the output and log paths. &#xD;&#xA;&#xD;&#xA;Reason: PPD Steps 4 + 5 — persist the result and record an audit line. &#xD;&#xA;&#xD;&#xA;Outcome: Eligible_Applicants.csv saved and ResultsLog.txt updated." DisplayName="Invoke Workflow - WriteResults" sap:VirtualizedContainerService.HintSize="416,303" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Workflows\WriteResults.xaml">
             <ui:InvokeWorkflowFile.Arguments>
               <InArgument x:TypeArguments="x:Int32" x:Key="in_intTotalCount">[dt_Applications.Rows.Count]</InArgument>
               <InArgument x:TypeArguments="x:Int32" x:Key="in_intEligibleCount">[intEligibleCount]</InArgument>
@@ -146,18 +161,35 @@
               <InArgument x:TypeArguments="x:String" x:Key="in_strOutputPath">[strOutputPath]</InArgument>
               <InArgument x:TypeArguments="sd:DataTable" x:Key="in_dt_Eligible">[dt_Eligible]</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
           </ui:InvokeWorkflowFile>
-          <ui:LogMessage DisplayName="Log Message - Workflow Complete" sap:VirtualizedContainerService.HintSize="416,166" sap2010:WorkflowViewState.IdRef="LogMessage_2" Message="[&quot;PS06 bursary processing completed successfully.&quot;]" />
+          <ui:LogMessage sap2010:Annotation.AnnotationText="Source: end of Main sequence. &#xD;&#xA;&#xD;&#xA;Reason: signal that the whole PPD flow finished without aborting. &#xD;&#xA;&#xD;&#xA;Outcome: Info entry marks a clean run in the execution log." DisplayName="Log Message - Workflow Complete" sap:VirtualizedContainerService.HintSize="416,292" sap2010:WorkflowViewState.IdRef="LogMessage_2" Message="[&quot;PS06 bursary processing completed successfully.&quot;]">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </ui:LogMessage>
         </Sequence>
       </If.Then>
       <If.Else>
-        <Sequence DisplayName="Else - Data is invalid" sap:VirtualizedContainerService.HintSize="450,226" sap2010:WorkflowViewState.IdRef="Sequence_3">
+        <Sequence DisplayName="Else - Data is invalid" sap:VirtualizedContainerService.HintSize="450,257" sap2010:WorkflowViewState.IdRef="Sequence_3">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:LogMessage DisplayName="Log - Date is invalid" sap:VirtualizedContainerService.HintSize="416,166" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Fatal" Message="[&quot;Validation failed. Aborting.&quot;]" />
+          <ui:LogMessage sap2010:Annotation.AnnotationText="Failed Validation, log and end program" DisplayName="Log - Date is invalid" sap:VirtualizedContainerService.HintSize="416,197" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Fatal" Message="[&quot;Validation failed. Aborting.&quot;]">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </ui:LogMessage>
         </Sequence>
       </If.Else>
     </If>
